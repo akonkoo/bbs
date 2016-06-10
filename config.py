@@ -19,7 +19,7 @@ class DevelopmentConfig(Config):
 	MAIL_PORT = 25
 	MAIL_USE_TLS = True
 	MAIL_USERNAME = '348013444'
-	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+	MAIL_PASSWORD = 'dspojtiezgmicaaj'
 	SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
 

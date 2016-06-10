@@ -1,9 +1,58 @@
 {% extends "base.html" %}
+{% import "_macros.html" as macros %}
 
 {% block title %}HCode - Home{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
-	<h3>Hello, Code</h3>
+	<h3>Hello, {% if current_user.is_authenticated %}{{ current_user.name }}{% else %}Coder{% endif %}!</h3>
+</div>
+<div class="page_content">
+	<a class="btn btn-default" href={{ url_for('main.post') }}>
+  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Object
+	</a>
+	<table class="table table-condensed">
+		<thead>
+			<tr>
+				<th>Topic</th>
+				<th>Category</th>
+				<th>Users</th>
+				<th>Replies</th>
+				<th>Views</th>
+				<th>Activity</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for article in articles %}
+			<tr>
+				<td><a href="{{ url_for('.article_detail', id=article.id) }}">{{ article.title }}</a></td>
+				<td>{{ article.category }}</td>
+				<td>
+					<a href="{{ url_for('.user', username=article.author.username) }}">
+						<img class="img-rounded profile-thumbnail" 
+						src="{{ article.author.gravatar(size=20) }}">
+					</a>
+					{% for comment in article.comments[0:5] %}
+					<li>
+						<a href="{{ url_for('.user', username=comment.author.username) }}">
+							<img class="img-rounded profile-thumbnail" 
+							src="{{ comment.author.gravatar(size=20) }}">
+						</a>
+					</li>
+					{% endfor %}
+				</td>
+				<td>{{ article.comments.count() }}</td>
+				<td>{{ article.look_views }}
+				</td>
+				<td>{{ moment(article.pub_date).fromNow() }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div class="pagination">
+		{% if pagination %}
+			{{ macros.pagination_widget(pagination, '.index') }}
+		{% endif %}
+	</div>
 </div>
 {% endblock %}

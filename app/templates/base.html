@@ -4,6 +4,7 @@
 
 {% block head %}
 {{ super() }}
+<meta charset="utf-8">
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
@@ -24,14 +25,15 @@
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">All categaries <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="#">Action</a></li>
-						<li><a href="#">Another action</a></li>
-						<li><a href="#">Something else here</a></li>
+						<li><a href="{{ url_for('main.category', id=1) }}">初学入门</a></li>
+						<li><a href="{{ url_for('main.category', id=2) }}">编程语言</a></li>
+						<li><a href="{{ url_for('main.category', id=3) }}">招聘求职</a></li>
+						<li><a href="{{ url_for('main.category', id=4) }}">建议反馈</a></li>
 					</ul>
 				</li>
-				<li class="active"><a href=""{{ url_for('main.index') }}">Home</a></li>
+				<li class="active"><a href="{{ url_for('main.index') }}">Home</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				{% if current_user.is_authenticated %}
@@ -39,7 +41,7 @@
 					<a href="{{ url_for('main.user', username=current_user.username) }}">Profile</a>
 				</li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="{{ current_user.gravatar(size=18) }}">Account <span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="{{ current_user.gravatar(size=24) }}">Account <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="{{ url_for('auth.password_change') }}">Password Change</a></li>
 						<li><a href="{{ url_for('auth.logout')  }}">Sign out</a></li>
@@ -70,6 +72,7 @@
 {% block scripts %}
 {{ super() }}
 {{ moment.include_moment() }}
+{{ pagedown.include_pagedown() }}
 {% endblock %}
 
 

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %} Hcode - Article{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+	<h3 class="article-title">{{ article.title }}</h3>
+	<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+	{{ article.category }}	
+	{% for tag in article.tags %}
+	<sapn class="label label-primary">{{ tag }}</sapn>
+	{% endfor %}
+</div>
+<div class="page-content">
+	<div class="profile-thumbnail">
+		<a href="{{ url_for('.user', username=article.author.username) }}">
+			<img class="img-rounded profile-thumbnail" 
+			src="{{ article.author.gravatar(size=40) }}">
+		</a>
+	</div>
+	<div class="article">
+		<div class="article-author">
+			<a href="{{ url_for('.user', username=article.author.username) }}">
+				{{ article.author.username }}
+			</a>
+		</div>
+		<div class="article-date">
+			{{ moment(article.pub_date).format('L') }}
+		</div>
+		<div class="article-body">
+			{% if article.body_html %}
+				{{ article.body_html | safe }}
+			{% else %}
+				{{ article.body }}
+			{% endif %}
+		</div>
+	</div>
+	{% if current_user == article.author %}
+	<div class="content-bar">
+		<a class="btn btn-default btn-xs" href="{{ url_for('main.article_update', id=article.id) }}">Update</a>
+		<a class="btn btn-danger btn-xs" href="{{ url_for('main.article_delete', id=article.id) }}">Delete</a>
+	</div>
+	{% endif %}
+</div>
+
+
+<h4 id=comments>Comments</h4>
+<div class="comment-form container-flueid">
+	{{ wtf.quick_form(form) }}
+</div>
+{% include "_comments.html" %}
+{% if pagination %}
+<div class="pagination">
+	{{ macros.pagination_widget(pagination, '.article_detail', fragment='#comments', id=article.id) }}
+</div>
+{% endif %}
+{% endblock %} 

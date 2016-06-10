@@ -1,0 +1,1 @@
+@"c:\users\akonk\desktop\code\bbs\venv\scripts\python.exe" "c:\users\akonk\desktop\code\bbs\venv\Scripts\markdown_py" %*
