@@ -9,5 +9,12 @@ migrate = Migrate(app, db)
 
 manager.add_command('db', MigrateCommand)
 
+@manager.command
+def deploy():
+	from flask.ext.migrate import upgrade
+	from app.models import User
+
+	upgrade()
+
 if __name__ == '__main__':
 	manager.run()

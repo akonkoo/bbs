@@ -7,6 +7,7 @@ class Config:
 	SQLALCHEMY_TRACK_MODIFICATIONS = True
 	FLASK_MAIL_SUBJECT_PREFIX = '[Hcode]'
 	FLASK_MAIL_SENDER = 'Hcode Admin <348013444@qq.com>'
+	FLASK_ADMIN = '348013444@qq.com'
 
 	@staticmethod
 	def init_app(app):
@@ -24,7 +25,35 @@ class DevelopmentConfig(Config):
 
 
 class ProductionConfig(Config):
+	DEBUG = True
+	MAIL_SERVER = 'smtp.qq.com'
+	MAIL_PORT = 25
+	MAIL_USE_TLS = True
+	MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 	SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+
+	@classmethod
+	def init_app(cls, app):
+		Config.init_app(app)
+
+		import logging
+		from logging.handlers import SMTPHandler
+		credentials = None
+		secure = None
+		if getattr(cls, 'MAIL_USERNAME', None) is not None:
+			credentials = (cls.MAIL_USERNAME, cls.MAIL_PASSWORD)
+			if getattr(cls 'MAIL_USE_TLS', None):
+				secure = ()
+			mail_handler = SMTPHandler(
+				mailhost=(cls.MAIL_SERVER, cls.MAIL_PORT),
+				fromaddr=cls.FLASK_MAIL_SENDER,
+				toaddrs=[cls.FLASK_ADMIN],
+				subject=cls.FLASK_MAIL_SUBJECT_PREFIX + 'Application Error',
+				credentials=credentials,
+				secure=secure)
+			mail_handler.setLevel(logging.ERROR)
+			app.logger.addHandler(mail_handler)
 
 
 class TestingConfig(Config):
