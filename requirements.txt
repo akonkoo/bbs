@@ -25,3 +25,6 @@ SQLAlchemy==1.0.12
 visitor==0.1.2
 Werkzeug==0.11.9
 WTForms==2.1
+gunicorn==19.6.0
+psycopg2==2.6.1
+
