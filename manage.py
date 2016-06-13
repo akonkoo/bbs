@@ -1,3 +1,5 @@
+#coding: utf-8
+
 import os
 from app import create_app, db
 from flask.ext.script import Manager, Shell
@@ -12,9 +14,16 @@ manager.add_command('db', MigrateCommand)
 @manager.command
 def deploy():
 	from flask.ext.migrate import upgrade
-	from app.models import User
+	from app.models import Category
 
 	upgrade()
+
+	c1 = Category(name=u'初学入门')
+	c2 = Category(name=u'编程语言')
+	c3 = Category(name=u'招聘求职')
+	c4 = Category(name=u'建议反馈')
+	db.session.add_all([c1, c2, c3, c4])
+	db.session.commit()
 
 if __name__ == '__main__':
 	manager.run()
