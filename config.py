@@ -8,6 +8,7 @@ class Config:
 	FLASK_MAIL_SUBJECT_PREFIX = '[Hcode]'
 	FLASK_MAIL_SENDER = 'Hcode Admin <348013444@qq.com>'
 	FLASK_ADMIN = '348013444@qq.com'
+	SSL_DISBALE = True
 
 	@staticmethod
 	def init_app(app):
@@ -21,7 +22,8 @@ class DevelopmentConfig(Config):
 	MAIL_USE_TLS = True
 	MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
 	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-	SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+	SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
+		'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
 
 class ProductionConfig(Config):
@@ -31,7 +33,8 @@ class ProductionConfig(Config):
 	MAIL_USE_TLS = True
 	MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
 	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-	SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+	SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+		'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
 	@classmethod
 	def init_app(cls, app):
@@ -61,6 +64,7 @@ class TestingConfig(Config):
 
 
 class HerokuConfig(ProductionConfig):
+	SSL_DISBALE = bool(os.environ.get('SSL_DISBALE'))
 	@classmethod
 	def init_app(cls, app):
 		ProductionConfig.init_app()
@@ -70,6 +74,10 @@ class HerokuConfig(ProductionConfig):
 		file_handler = StreamHandler()
 		file_handler.setLevel(logging.WARNING)
 		app.logger.addHandler(file_handler)
+
+		from werkzeug.contrib.fixers import ProxyFix
+		app.wsgi_app = ProxyFix(app.wsgi_app)
+		
 
 config = {
 	'development': DevelopmentConfig,
