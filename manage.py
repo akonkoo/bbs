@@ -18,10 +18,10 @@ def deploy():
 
 	upgrade()
 
-	c1 = Category(name=u'初学入门')
-	c2 = Category(name=u'编程语言')
-	c3 = Category(name=u'招聘求职')
-	c4 = Category(name=u'建议反馈')
+	c1 = Category(name='初学入门')
+	c2 = Category(name='编程语言')
+	c3 = Category(name='招聘求职')
+	c4 = Category(name='建议反馈')
 	db.session.add_all([c1, c2, c3, c4])
 	db.session.commit()
 
