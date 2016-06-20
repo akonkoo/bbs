@@ -11,7 +11,9 @@ Flask-Moment==0.5.1
 Flask-PageDown==0.2.1
 Flask-Script==2.0.5
 Flask-SQLAlchemy==2.1
+Flask-SSLify==0.1.5
 Flask-WTF==0.12
+gunicorn==19.6.0
 html5lib==0.9999999
 itsdangerous==0.24
 Jinja2==2.8
@@ -19,12 +21,10 @@ Mako==1.0.4
 Markdown==2.6.6
 MarkupSafe==0.23
 peewee==2.8.0
+psycopg2==2.6.1
 python-editor==1.0
 six==1.10.0
 SQLAlchemy==1.0.12
 visitor==0.1.2
 Werkzeug==0.11.9
 WTForms==2.1
-gunicorn==19.6.0
-psycopg2==2.6.1
-
