@@ -21,15 +21,6 @@ def deploy():
 
 	upgrade()
 
-	c1 = Category(name=u'初学入门')
-	c2 = Category(name=u'编程语言')
-	c3 = Category(name=u'招聘求职')
-	c4 = Category(name=u'建议反馈')
-	db.session.add(c1)
-	db.session.add(c2)
-	db.session.add(c3)
-	db.session.add(c4)
-	db.session.commit()
 
 if __name__ == '__main__':
 	manager.run()
