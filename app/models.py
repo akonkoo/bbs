@@ -179,7 +179,4 @@ db.event.listen(Comment.body, 'set', Comment.on_change_body)
 
 
 
-from app import admin
-from flask.ext.admin.contrib.sqla import ModelView
 
-admin.add_view(ModelView(Category, db.session))
