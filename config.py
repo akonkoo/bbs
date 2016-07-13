@@ -47,15 +47,15 @@ class ProductionConfig(Config):
 			credentials = (cls.MAIL_USERNAME, cls.MAIL_PASSWORD)
 			if getattr(cls, 'MAIL_USE_TLS', None):
 				secure = ()
-			mail_handler = SMTPHandler(
-				mailhost=(cls.MAIL_SERVER, cls.MAIL_PORT),
-				fromaddr=cls.FLASK_MAIL_SENDER,
-				toaddrs=[cls.FLASK_ADMIN],
-				subject=cls.FLASK_MAIL_SUBJECT_PREFIX + 'Application Error',
-				credentials=credentials,
-				secure=secure)
-			mail_handler.setLevel(logging.ERROR)
-			app.logger.addHandler(mail_handler)
+		mail_handler = SMTPHandler(
+			mailhost=(cls.MAIL_SERVER, cls.MAIL_PORT),
+			fromaddr=cls.FLASK_MAIL_SENDER,
+			toaddrs=[cls.FLASK_ADMIN],
+			subject=cls.FLASK_MAIL_SUBJECT_PREFIX + 'Application Error',
+			credentials=credentials,
+			secure=secure)
+		mail_handler.setLevel(logging.ERROR)
+		app.logger.addHandler(mail_handler)
 
 
 class TestingConfig(Config):
@@ -64,18 +64,21 @@ class TestingConfig(Config):
 
 class HerokuConfig(ProductionConfig):
 	SSL_DISBALE = bool(os.environ.get('SSL_DISBALE'))
+
 	@classmethod
 	def init_app(cls, app):
-		ProductionConfig.init_app()
+		ProductionConfig.init_app(app)
+
+        #handle proxy server 
+		from werkzeug.contrib.fixers import ProxyFix
+		app.wsgi_app = ProxyFix(app.wsgi_app)
+
 
 		import logging
 		from logging import StreamHandler
 		file_handler = StreamHandler()
 		file_handler.setLevel(logging.WARNING)
 		app.logger.addHandler(file_handler)
-
-		from werkzeug.contrib.fixers import ProxyFix
-		app.wsgi_app = ProxyFix(app.wsgi_app)
 		
 
 config = {
