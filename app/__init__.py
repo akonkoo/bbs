@@ -6,6 +6,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from flask.ext.pagedown import PageDown
 from flask.ext.admin import Admin
+# from flask.ext.sslify import SSLify
 from config import config
 
 bootstrap = Bootstrap()
@@ -23,8 +24,8 @@ def create_app(config_name):
 	app.config.from_object(config[config_name])
 	config[config_name].init_app(app)
 
-	if not app.debug and not app.testing and not app.config['SSL_DISABLE']:
-		sslify = SSLify(app)
+	# if not app.debug and not app.testing and not app.config['SSL_DISABLE']:
+	# 	sslify = SSLify(app)
 
 	bootstrap.init_app(app)
 	mail.init_app(app)
