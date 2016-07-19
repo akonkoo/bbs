@@ -18,7 +18,6 @@ manager.add_command('db', MigrateCommand)
 def deploy():
 	from flask.ext.migrate import upgrade
 
-	migrate()
 	upgrade()
 
 
