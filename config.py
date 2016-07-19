@@ -8,7 +8,7 @@ class Config:
 	FLASK_MAIL_SUBJECT_PREFIX = '[Hcode]'
 	FLASK_MAIL_SENDER = 'Hcode Admin <348013444@qq.com>'
 	FLASK_ADMIN = '348013444@qq.com'
-	SSL_DISBALE = True
+	# SSL_DISBALE = True
 
 	@staticmethod
 	def init_app(app):
@@ -27,7 +27,6 @@ class DevelopmentConfig(Config):
 
 
 class ProductionConfig(Config):
-	DEBUG = True
 	MAIL_SERVER = 'smtp.qq.com'
 	MAIL_PORT = 25
 	MAIL_USE_TLS = True
@@ -63,15 +62,15 @@ class TestingConfig(Config):
 
 
 class HerokuConfig(ProductionConfig):
-	SSL_DISBALE = bool(os.environ.get('SSL_DISBALE'))
+	# SSL_DISBALE = bool(os.environ.get('SSL_DISBALE'))
 
 	@classmethod
 	def init_app(cls, app):
 		ProductionConfig.init_app(app)
 
         #handle proxy server 
-		from werkzeug.contrib.fixers import ProxyFix
-		app.wsgi_app = ProxyFix(app.wsgi_app)
+		# from werkzeug.contrib.fixers import ProxyFix
+		# app.wsgi_app = ProxyFix(app.wsgi_app)
 
 
 		import logging
