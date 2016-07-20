@@ -5,7 +5,7 @@
 
 {% block page_content %}
 <div class="page-header">
-	<h3>Hello, {% if current_user.is_authenticated %}{{ current_user.name }}{% else %}Coder{% endif %}!</h3>
+	<h3>Hello, {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Coder{% endif %}!</h3>
 </div>
 <div class="page_content">
 	<a class="btn btn-default" href={{ url_for('main.post') }}>
